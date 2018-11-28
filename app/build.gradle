@@ -83,7 +83,7 @@ dependencies {
     kapt "android.arch.persistence.room:compiler:$room_version"
 
     // Picasso
-    //implementation "com.squareup.picasso:picasso:$picasso_version"
+    implementation "com.squareup.picasso:picasso:$picasso_version"
 
     // MaterialSearchView
     implementation "com.miguelcatalan:materialsearchview:$materialsearchview_version"
