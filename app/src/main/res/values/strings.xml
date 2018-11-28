@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MVVM Kotlin</string>
+    <string name="search">Search</string>
+    <string name="mainTitle">Data by Query String</string>
+    <string name="repoName">repoName</string>
+    <string name="fullName">fullName</string>
+    <string name="name">name</string>
+    <string name="forks">forks</string>
+    <string name="description">description</string>
+</resources>
