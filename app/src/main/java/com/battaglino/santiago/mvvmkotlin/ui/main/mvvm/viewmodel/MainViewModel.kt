@@ -21,16 +21,12 @@ constructor(application: Application, datasitory: DataRepository) : BaseViewMode
         return useCaseRepository?.getSuggestions()
     }
 
-    fun getData(): LiveData<List<Data>>? {
-        return useCaseRepository?.getDataList()
-    }
-
     fun getImagesByQuery(): LiveData<List<Data>>? {
         return useCaseRepository?.getDataByQuery()
     }
 
-    fun findDataByQueryFromServer(page: Int, q: String, mature: Boolean) {
-        useCaseRepository?.findDataByQueryFromServer(page, q, mature)
+    fun findDataByQueryFromServer(page: Int, q: String, mature: Boolean, qType: String?) {
+        useCaseRepository?.findDataByQueryFromServer(page, q, mature, qType)
     }
 
     fun getDataCached(queryString: String) {

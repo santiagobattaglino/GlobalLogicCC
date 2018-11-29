@@ -111,7 +111,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
 
     private fun doSearch() {
         setTitle()
-        baseViewModel.findDataByQueryFromServer(1, mQueryString, false)
+        baseViewModel.findDataByQueryFromServer(1, mQueryString, false, null)
     }
 
     private fun setTitle() {
@@ -131,6 +131,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
 
     private fun getQueryString(): String {
         val preferences = PreferenceManager.getDefaultSharedPreferences(baseActivity.get())
+        @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         mQueryString = preferences.getString(Constants.QUERY, "")
         return mQueryString
     }

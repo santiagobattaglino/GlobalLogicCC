@@ -77,10 +77,21 @@ class DataAdapter(
 
         fun bind(data: Data) = with(itemView) {
             name.text = data.title
-            if (data.images.isNotEmpty()) {
+            // Only for album type
+            if (data.images.isNotEmpty() && data.isAlbum) {
                 Picasso.get()
                         .load(data.images[0].link)
                         .fit()
+                        .placeholder(R.drawable.picasso_placeholder)
+                        .error(R.drawable.picasso_error)
+                        .centerCrop()
+                        .into(logo)
+            } else {
+                Picasso.get()
+                        .load(data.link)
+                        .fit()
+                        .placeholder(R.drawable.picasso_placeholder)
+                        .error(R.drawable.picasso_error)
                         .centerCrop()
                         .into(logo)
             }

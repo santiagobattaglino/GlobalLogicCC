@@ -25,9 +25,17 @@ data class Data @Ignore constructor(
         var title: String?,
 
         @Expose
+        @SerializedName("is_album")
+        var isAlbum: Boolean,
+
+        @Expose
+        @SerializedName("link")
+        var link: String,
+
+        @Expose
         @SerializedName("images")
         @TypeConverters(ImageConverter::class)
         var images: List<Image>
 ) : Parcelable {
-    constructor() : this("", "", emptyList())
+    constructor() : this("", "", false, "", emptyList())
 }

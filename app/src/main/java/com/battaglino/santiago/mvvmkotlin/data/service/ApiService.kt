@@ -17,6 +17,7 @@ interface ApiService {
     fun getPagedImagesByQuery(
             @Path("page") page: Int,
             @Query("q") q: String,
-            @Query("mature") mature: Boolean
+            @Query("mature") mature: Boolean,
+            @Query("q_type") qType: String?
     ): Observable<ApiResponse<Data>>
 }

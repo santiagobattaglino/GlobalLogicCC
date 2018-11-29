@@ -25,7 +25,7 @@ constructor(context: Application, private val mClient: ApiService) : UseCaseRepo
     private var mDataBase: AppDatabase? = null
     private val mDisposable: CompositeDisposable = CompositeDisposable()
 
-    private var mFoundRepos: MutableLiveData<List<Data>> = MutableLiveData()
+    private var mFoundData: MutableLiveData<List<Data>> = MutableLiveData()
     private var mFoundSuggestions: LiveData<List<Data>> = MutableLiveData()
 
     override fun initLocalData() {
@@ -47,18 +47,18 @@ constructor(context: Application, private val mClient: ApiService) : UseCaseRepo
 
     }
 
-    fun findDataByQueryFromServer(page: Int, q: String, mature: Boolean) {
-        mClient.getPagedImagesByQuery(page, q, mature)
+    fun findDataByQueryFromServer(page: Int, q: String, mature: Boolean, qType: String?) {
+        mClient.getPagedImagesByQuery(page, q, mature, qType)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<ApiResponse<Data>> {
                     override fun onSubscribe(d: Disposable) {
-                        mDisposable.add(d)
+                        //mDisposable.add(d)
                     }
 
                     override fun onNext(dataListFromServer: ApiResponse<Data>) {
-                        addFoundReposDataList(dataListFromServer.data, q)
-                        mDisposable.dispose()
+                        addFoundDataList(dataListFromServer.data, q)
+                        //mDisposable.dispose()
                     }
 
                     override fun onError(e: Throwable) {
@@ -77,19 +77,23 @@ constructor(context: Application, private val mClient: ApiService) : UseCaseRepo
     }
 
     fun getDataByQuery(): LiveData<List<Data>> {
-        return mFoundRepos
+        return mFoundData
     }
 
-    private fun addFoundReposDataList(data: List<Data>, q: String) {
+    private fun addFoundDataList(data: List<Data>, q: String) {
         mDataBase!!.dataModel().insertAll(data)
-        setFoundReposDataList(mDataBase!!.dataModel().loadByQuery(q))
+        setFoundDataList(mDataBase!!.dataModel().loadByQuery(q))
     }
 
-    private fun setFoundReposDataList(foundRepos: List<Data>) {
-        mFoundRepos.value = foundRepos
+    private fun setFoundDataList(foundData: List<Data>) {
+        mFoundData.value = foundData
     }
 
     fun getDataCached(queryString: String) {
-        setFoundReposDataList(mDataBase!!.dataModel().loadByQuery(queryString))
+        setFoundDataList(mDataBase!!.dataModel().loadByQuery(queryString))
+    }
+
+    fun getSingleData(id: String): LiveData<Data>? {
+        return mDataBase!!.dataModel().load(id)
     }
 }
