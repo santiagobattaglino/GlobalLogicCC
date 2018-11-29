@@ -3,7 +3,10 @@ package com.battaglino.santiago.mvvmkotlin.db
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
 import android.content.Context
+import com.battaglino.santiago.mvvmkotlin.db.converters.DateConverter
+import com.battaglino.santiago.mvvmkotlin.db.converters.ImageConverter
 import com.battaglino.santiago.mvvmkotlin.db.dao.DataDao
 import com.battaglino.santiago.mvvmkotlin.db.dao.ImageDao
 import com.battaglino.santiago.mvvmkotlin.db.entity.Data
@@ -15,7 +18,7 @@ import com.battaglino.santiago.mvvmkotlin.global.Constants
  * This class is used to create the database and get an instance of it.
  */
 @Database(entities = [Data::class, Image::class], version = 1, exportSchema = true)
-//@TypeConverters(DateConverter::class, OwnerConverter::class)
+@TypeConverters(DateConverter::class, ImageConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun dataModel(): DataDao

@@ -1,10 +1,8 @@
 package com.battaglino.santiago.mvvmkotlin.db.entity
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Ignore
-import android.arch.persistence.room.Index
-import android.arch.persistence.room.PrimaryKey
+import android.arch.persistence.room.*
 import android.os.Parcelable
+import com.battaglino.santiago.mvvmkotlin.db.converters.ImageConverter
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import io.reactivex.annotations.NonNull
@@ -26,10 +24,10 @@ data class Data @Ignore constructor(
         @SerializedName("title")
         var title: String?,
 
-        @Ignore
         @Expose
         @SerializedName("images")
-        var images: List<Image>?
+        @TypeConverters(ImageConverter::class)
+        var images: List<Image>
 ) : Parcelable {
     constructor() : this("", "", emptyList())
 }

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.battaglino.santiago.mvvmkotlin.R
 import com.battaglino.santiago.mvvmkotlin.db.entity.Data
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.listitem_data.view.*
 import kotlin.properties.Delegates
 
@@ -76,6 +77,13 @@ class DataAdapter(
 
         fun bind(data: Data) = with(itemView) {
             name.text = data.title
+            if (data.images.isNotEmpty()) {
+                Picasso.get()
+                        .load(data.images[0].link)
+                        .resize(64, 64)
+                        .centerCrop()
+                        .into(logo)
+            }
         }
     }
 }
