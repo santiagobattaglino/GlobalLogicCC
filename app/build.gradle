@@ -4,11 +4,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.battaglino.santiago.mvvmkotlin"
-        minSdkVersion 21
-        targetSdkVersion 27
+        minSdkVersion 23
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -39,17 +39,18 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    // Support
+    // Support Compatibility problems with support and Picasso. Picasso use 27.1.0. We are actually using 28.0.0
+    // noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
     implementation "com.android.support:cardview-v7:$support_version"
     implementation "com.android.support:design:$support_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
     // Dagger
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.google.dagger:dagger-android:$dagger_version"
-    //implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
@@ -68,15 +69,10 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     implementation "com.jakewharton.rxbinding2:rxbinding:$rxbinding_version"
 
-    // Parceler
-    //implementation "org.parceler:parceler-api:$parceler_version"
-    //kapt "org.parceler:parceler:$parceler_version"
-
     // LifeCycle
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
-    //kapt "android.arch.lifecycle:compiler:$lifecycle_version" (for java 7)
+    implementation "android.arch.lifecycle:reactivestreams:$lifecycle_version"
     kapt "android.arch.lifecycle:common-java8:$lifecycle_version"
-    //implementation "android.arch.lifecycle:reactivestreams:$lifecycle_version" // optional - ReactiveStreams support for LiveData
 
     // Room
     implementation "android.arch.persistence.room:runtime:$room_version"

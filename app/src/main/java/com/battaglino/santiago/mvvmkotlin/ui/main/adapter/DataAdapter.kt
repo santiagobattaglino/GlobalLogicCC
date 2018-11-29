@@ -80,7 +80,7 @@ class DataAdapter(
             if (data.images.isNotEmpty()) {
                 Picasso.get()
                         .load(data.images[0].link)
-                        .resize(64, 64)
+                        .fit()
                         .centerCrop()
                         .into(logo)
             }
