@@ -20,8 +20,17 @@ class DataAdapter(
         private val onViewHolderClick: OnViewHolderClick?
 ) : RecyclerView.Adapter<DataAdapter.ViewHolder>(), AutoUpdatableAdapter {
 
+    companion object {
+        const val VIEW_TYPE_LOADING = 0
+        const val VIEW_TYPE_DATA = 1
+    }
+
     override fun getItemViewType(position: Int): Int {
-        return 0
+        return if (mData.lastIndex == position) {
+            VIEW_TYPE_LOADING
+        } else {
+            VIEW_TYPE_DATA
+        }
     }
 
     var mData: List<Data> by Delegates.observable(emptyList()) { _, oldList, newList ->
@@ -29,12 +38,7 @@ class DataAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return when (viewType) {
-            0 -> ViewHolder(createView(context, parent, viewType), onViewHolderClick)
-            else -> {
-                ViewHolder(createView(context, parent, viewType), onViewHolderClick)
-            }
-        }
+        return ViewHolder(createView(context, parent, viewType), onViewHolderClick)
     }
 
     override fun getItemCount() = mData.size
@@ -50,9 +54,10 @@ class DataAdapter(
     private fun createView(context: AppCompatActivity?, viewGroup: ViewGroup, viewType: Int): View {
         val inflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         return when (viewType) {
-            0 -> inflater.inflate(R.layout.listitem_data, viewGroup, false)
+            VIEW_TYPE_LOADING -> inflater.inflate(R.layout.listitem_loading, viewGroup, false)
+            VIEW_TYPE_DATA -> inflater.inflate(R.layout.listitem_data, viewGroup, false)
             else -> {
-                inflater.inflate(R.layout.listitem_data, viewGroup, false)
+                inflater.inflate(R.layout.listitem_loading, viewGroup, false)
             }
         }
     }
@@ -75,25 +80,28 @@ class DataAdapter(
         }
 
         fun bind(data: Data) = with(itemView) {
-            imageTitle.text = data.title
 
-            // Only for album type
-            if (data.images.isNotEmpty() && data.isAlbum) {
-                Picasso.get()
-                        .load(data.images[0].link)
-                        .fit()
-                        .placeholder(R.drawable.picasso_placeholder)
-                        .error(R.drawable.picasso_error)
-                        .centerCrop()
-                        .into(image)
-            } else {
-                Picasso.get()
-                        .load(data.link)
-                        .fit()
-                        .placeholder(R.drawable.picasso_placeholder)
-                        .error(R.drawable.picasso_error)
-                        .centerCrop()
-                        .into(image)
+            if (itemViewType == VIEW_TYPE_DATA) {
+                imageTitle.text = data.title
+
+                // Only for album type
+                if (data.images.isNotEmpty() && data.isAlbum) {
+                    Picasso.get()
+                            .load(data.images[0].link)
+                            .fit()
+                            .placeholder(R.drawable.picasso_placeholder)
+                            .error(R.drawable.picasso_error)
+                            .centerCrop()
+                            .into(image)
+                } else {
+                    Picasso.get()
+                            .load(data.link)
+                            .fit()
+                            .placeholder(R.drawable.picasso_placeholder)
+                            .error(R.drawable.picasso_error)
+                            .centerCrop()
+                            .into(image)
+                }
             }
         }
     }
