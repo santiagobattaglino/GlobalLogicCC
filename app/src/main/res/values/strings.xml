@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MVVM Kotlin</string>
     <string name="search">Search</string>
-    <string name="mainTitle">Data by Query String</string>
+    <string name="mainTitle">Searching for: %s</string>
     <string name="imageTitle">Image title</string>
     <string name="fullName">fullName</string>
     <string name="name">name</string>

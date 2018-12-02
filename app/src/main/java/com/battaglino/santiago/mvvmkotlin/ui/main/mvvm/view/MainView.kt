@@ -5,11 +5,13 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.preference.PreferenceManager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.battaglino.santiago.mvvmkotlin.R
 import com.battaglino.santiago.mvvmkotlin.base.mvvm.view.BaseView
 import com.battaglino.santiago.mvvmkotlin.db.entity.Data
 import com.battaglino.santiago.mvvmkotlin.global.Constants
+import com.battaglino.santiago.mvvmkotlin.global.EndlessRecyclerViewScrollListener
 import com.battaglino.santiago.mvvmkotlin.ui.main.activity.MainActivity
 import com.battaglino.santiago.mvvmkotlin.ui.main.activity.MainDetailActivity
 import com.battaglino.santiago.mvvmkotlin.ui.main.adapter.DataAdapter
@@ -60,6 +62,14 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
 
     private fun setUpRecyclerView() {
         recyclerView?.layoutManager = layoutManager
+
+        val mScrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+                baseViewModel.findDataByQueryFromServer(page, mQueryString, false, null)
+            }
+        }
+        recyclerView?.addOnScrollListener(mScrollListener)
+
         recyclerView?.adapter = mAdapter
     }
 
@@ -131,8 +141,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
     private fun setTitle() {
         if (!mQueryString.isEmpty()) {
             mainTitle?.visibility = View.VISIBLE
-            mainTitle?.text = String.format(Locale.getDefault(), "%s: %s",
-                    baseActivity.get()?.getString(R.string.mainTitle), mQueryString
+            mainTitle?.text = String.format(Locale.getDefault(), baseActivity.get()?.getString(R.string.mainTitle)!!, mQueryString
             )
         }
     }
