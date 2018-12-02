@@ -2,57 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/name"
-        style="@style/TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="4dp"
-        android:text="@string/name" />
-
-    <TextView
-        android:id="@+id/fullName"
-        style="@style/TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/textview_margin_top"
-        android:gravity="center"
-        android:text="@string/fullName"
-        android:textSize="13sp" />
-
-    <RatingBar
-        android:id="@+id/score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/textview_margin_top"
-        android:isIndicator="true"
-        android:numStars="5"
-        android:stepSize="0.01" />
-
-    <TextView
-        android:id="@+id/forks"
-        style="@style/TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/textview_margin_top"
-        android:gravity="center"
-        android:text="@string/forks"
-        android:textSize="14sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/description"
-        style="@style/TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/textview_margin_top"
-        android:gravity="center"
-        android:text="@string/description"
-        android:textSize="13sp" />
 
 </LinearLayout>

@@ -16,9 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity
-            android:name=".ui.main.activity.MainActivity"
-            android:theme="@style/AppTheme">
+        <activity android:name=".ui.main.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -28,7 +26,8 @@
         </activity>
         <activity
             android:name=".ui.main.activity.MainDetailActivity"
-            android:parentActivityName=".ui.main.activity.MainActivity" />
+            android:parentActivityName=".ui.main.activity.MainActivity"
+            android:theme="@style/TranslucentStatus" />
     </application>
 
 </manifest>

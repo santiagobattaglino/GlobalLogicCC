@@ -85,7 +85,7 @@ class DataAdapter(
                         .placeholder(R.drawable.picasso_placeholder)
                         .error(R.drawable.picasso_error)
                         .centerCrop()
-                        .into(logo)
+                        .into(image)
             } else {
                 Picasso.get()
                         .load(data.link)
@@ -93,7 +93,7 @@ class DataAdapter(
                         .placeholder(R.drawable.picasso_placeholder)
                         .error(R.drawable.picasso_error)
                         .centerCrop()
-                        .into(logo)
+                        .into(image)
             }
         }
     }
