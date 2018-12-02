@@ -1,5 +1,6 @@
 package com.battaglino.santiago.mvvmkotlin.ui.main.mvvm.view
 
+import android.app.ActivityOptions
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.preference.PreferenceManager
@@ -18,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.coroutines.*
 import java.util.*
+
 
 /**
  * Created by Santiago Battaglino.
@@ -159,6 +161,10 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
     override fun dataViewClickFromList(view: View, position: Int, data: Data) {
         val intent = Intent(baseActivity.get(), MainDetailActivity::class.java)
         intent.putExtra(Constants.INTENT_DATA, data)
-        baseActivity.get()?.startActivity(intent)
+
+        val transitionName = baseActivity.get()?.getString(R.string.dataTransition)
+
+        val transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(baseActivity.get(), view, transitionName)
+        baseActivity.get()?.startActivity(intent, transitionActivityOptions.toBundle())
     }
 }

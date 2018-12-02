@@ -8,4 +8,5 @@
     <string name="forks">forks</string>
     <string name="description">description</string>
     <string name="searchHint">Search for Imgur images</string>
+    <string name="dataTransition">dataTransition</string>
 </resources>

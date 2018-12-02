@@ -12,7 +12,6 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.listitem_data.view.*
 import kotlin.properties.Delegates
 
-
 /**
  * Created by Santiago Battaglino.
  */
@@ -76,7 +75,8 @@ class DataAdapter(
         }
 
         fun bind(data: Data) = with(itemView) {
-            name.text = data.title
+            imageTitle.text = data.title
+
             // Only for album type
             if (data.images.isNotEmpty() && data.isAlbum) {
                 Picasso.get()

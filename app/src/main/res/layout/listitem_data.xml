@@ -7,9 +7,9 @@
     android:layout_marginTop="8dp"
     android:layout_marginRight="8dp"
     android:minHeight="200dp"
+    android:transitionName="@string/dataTransition"
     app:cardCornerRadius="10dp"
-    app:cardElevation="4dp"
-    app:cardPreventCornerOverlap="true">
+    app:cardElevation="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:contentDescription="@string/app_name" />
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/imageTitle"
             style="@style/TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -8,6 +8,7 @@ import com.battaglino.santiago.mvvmkotlin.ui.main.activity.MainDetailActivity
 import com.battaglino.santiago.mvvmkotlin.ui.main.mvvm.viewmodel.MainDetailViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main_detail.*
+import kotlinx.android.synthetic.main.content_main_detail.*
 
 /**
  * Created by Santiago Battaglino.
@@ -15,8 +16,10 @@ import kotlinx.android.synthetic.main.activity_main_detail.*
 class MainDetailView(activity: MainDetailActivity, viewModel: MainDetailViewModel) :
         BaseView<MainDetailActivity, MainDetailViewModel>(activity, viewModel) {
 
-    private val toolbar = baseActivity.get()?.toolbar
-    private val image = baseActivity.get()?.image
+    private val toolbar = baseActivity.get()?.toolbar!!
+    private val image = baseActivity.get()?.image!!
+    private val imageTitle = baseActivity.get()?.imageTitle!!
+    private val data: Data = baseActivity.get()?.intent?.getParcelableExtra(Constants.INTENT_DATA)!!
 
     init {
         setUpToolbar()
@@ -35,9 +38,10 @@ class MainDetailView(activity: MainDetailActivity, viewModel: MainDetailViewMode
     }
 
     private fun setValues() {
-        val data: Data? = baseActivity.get()?.intent?.getParcelableExtra(Constants.INTENT_DATA)
+        imageTitle.text = data.title
 
-        if (data!!.images.isNotEmpty() && data.isAlbum) {
+        // Only for album type
+        if (data.images.isNotEmpty() && data.isAlbum) {
             Picasso.get()
                     .load(data.images[0].link)
                     .fit()
