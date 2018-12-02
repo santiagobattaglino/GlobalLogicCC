@@ -5,8 +5,8 @@ import android.os.Parcelable
 import com.battaglino.santiago.mvvmkotlin.db.converters.ImageConverter
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import io.reactivex.annotations.NonNull
 import kotlinx.android.parcel.Parcelize
+import org.jetbrains.annotations.NotNull
 
 /**
  * Created by Santiago Battaglino.
@@ -16,7 +16,7 @@ import kotlinx.android.parcel.Parcelize
 data class Data @Ignore constructor(
 
         @PrimaryKey
-        @NonNull
+        @NotNull
         @Expose
         var id: String,
 

@@ -16,6 +16,7 @@ import com.battaglino.santiago.mvvmkotlin.ui.main.mvvm.viewmodel.MainViewModel
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.coroutines.*
 import java.util.*
 
 /**
@@ -35,6 +36,8 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
     private val mainTitle = baseActivity.get()?.mainTitle
     private val recyclerView = baseActivity.get()?.recyclerView
     private val layoutManager = LinearLayoutManager(baseActivity.get(), LinearLayoutManager.VERTICAL, false)
+
+    private var queryTextChangedJob: Job? = null
 
     init {
         setUpToolbar()
@@ -64,7 +67,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
     }
 
     private fun subscribeSuggestions() {
-        baseViewModel.getSuggestions()?.observe(baseActivity.get()!!, Observer<List<Data>> { suggestions ->
+        baseViewModel.getSuggestions()?.observe(baseActivity.get()!!, Observer<List<String>> { suggestions ->
             if (suggestions != null) {
                 setSuggestions(suggestions)
             }
@@ -83,8 +86,8 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
         })
     }
 
-    private fun setSuggestions(data: List<Data>) {
-        searchView?.setSuggestions(getSuggestions(data))
+    private fun setSuggestions(suggestions: List<String>) {
+        searchView?.setSuggestions(suggestions.toTypedArray())
     }
 
     private fun getSuggestions(data: List<Data>): Array<String?> {
@@ -99,13 +102,22 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
         mAdapter.mData = data
     }
 
-    override fun onQueryTextChange(newText: String): Boolean {
+    override fun onQueryTextChange(query: String): Boolean {
+        if (!query.isEmpty()) {
+            queryTextChangedJob?.cancel()
+            queryTextChangedJob = GlobalScope.launch(Dispatchers.Main)
+            {
+                delay(250)
+                setQueryString(query)
+                doSearch()
+            }
+        }
         return false
     }
 
     override fun onQueryTextSubmit(query: String): Boolean {
-        setQueryString(query)
-        doSearch()
+        //setQueryString(query)
+        //doSearch()
         return false
     }
 

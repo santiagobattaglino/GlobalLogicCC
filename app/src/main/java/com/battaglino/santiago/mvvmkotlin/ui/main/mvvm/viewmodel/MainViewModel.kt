@@ -17,7 +17,7 @@ constructor(application: Application, datasitory: DataRepository) : BaseViewMode
         useCaseRepository = datasitory
     }
 
-    fun getSuggestions(): LiveData<List<Data>>? {
+    fun getSuggestions(): LiveData<List<String>>? {
         return useCaseRepository?.getSuggestions()
     }
 

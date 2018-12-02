@@ -26,7 +26,7 @@ constructor(context: Application, private val mClient: ApiService) : UseCaseRepo
     private val mDisposable: CompositeDisposable = CompositeDisposable()
 
     private var mFoundData: MutableLiveData<List<Data>> = MutableLiveData()
-    private var mFoundSuggestions: LiveData<List<Data>> = MutableLiveData()
+    private var mFoundSuggestions: LiveData<List<String>> = MutableLiveData()
 
     override fun initLocalData() {
         mDataBase = AppDatabase.getDatabaseBuilder(context)
@@ -71,7 +71,7 @@ constructor(context: Application, private val mClient: ApiService) : UseCaseRepo
                 })
     }
 
-    fun getSuggestions(): LiveData<List<Data>> {
+    fun getSuggestions(): LiveData<List<String>> {
         mFoundSuggestions = mDataBase!!.dataModel().loadSuggestions()
         return mFoundSuggestions
     }

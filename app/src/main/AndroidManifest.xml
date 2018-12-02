@@ -18,7 +18,7 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".ui.main.activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -28,8 +28,7 @@
         </activity>
         <activity
             android:name=".ui.main.activity.MainDetailActivity"
-            android:parentActivityName=".ui.main.activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".ui.main.activity.MainActivity" />
     </application>
 
 </manifest>
