@@ -128,14 +128,12 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
     }
 
     override fun onQueryTextSubmit(query: String): Boolean {
-        //setQueryString(query)
-        //doSearch()
         return false
     }
 
     private fun doSearch() {
         setTitle()
-        baseViewModel.findDataByQueryFromServer(1, mQueryString, false, null)
+        baseViewModel.findDataByQueryFromServer(0, mQueryString, false, null)
     }
 
     private fun setTitle() {

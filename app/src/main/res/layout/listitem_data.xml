@@ -9,7 +9,8 @@
     android:minHeight="200dp"
     android:transitionName="@string/dataTransition"
     app:cardCornerRadius="10dp"
-    app:cardElevation="4dp">
+    app:cardElevation="0dp"
+    app:cardPreventCornerOverlap="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
