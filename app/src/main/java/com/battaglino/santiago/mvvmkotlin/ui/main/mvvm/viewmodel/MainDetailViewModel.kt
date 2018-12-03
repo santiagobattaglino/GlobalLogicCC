@@ -16,8 +16,4 @@ constructor(application: Application, repository: DataRepository) : BaseViewMode
     init {
         useCaseRepository = repository
     }
-
-    fun getSingleData(id: String): LiveData<Data>? {
-        return useCaseRepository?.getSingleData(id)
-    }
 }

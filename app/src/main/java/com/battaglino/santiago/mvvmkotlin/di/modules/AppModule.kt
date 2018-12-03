@@ -8,6 +8,7 @@ import javax.inject.Singleton
 
 /**
  * Created by Santiago Battaglino.
+ * TODO add Room Db Module
  */
 @Module(includes = [RetrofitModule::class])
 class AppModule {

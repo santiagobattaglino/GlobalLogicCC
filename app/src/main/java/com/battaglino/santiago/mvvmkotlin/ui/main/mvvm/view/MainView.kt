@@ -41,6 +41,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
     private val recyclerView = baseActivity.get()?.recyclerView
     private val layoutManager = LinearLayoutManager(baseActivity.get(), LinearLayoutManager.VERTICAL, false)
 
+    var listOfJobs: MutableList<Job>? = null
     private var queryTextChangedJob: Job? = null
 
     init {
@@ -57,7 +58,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
     private fun setUpSearchView() {
         searchView?.setEllipsize(true)
         searchView?.setOnQueryTextListener(this)
-        baseViewModel.getDataCached(getQueryString())
+        baseViewModel.getAllLocalImagesByQuery(getQueryString())
     }
 
     private fun setUpRecyclerView() {
@@ -65,7 +66,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
 
         val mScrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-                baseViewModel.findDataByQueryFromServer(page, mQueryString, false, null)
+                baseViewModel.getRemoteImages(page, mQueryString, false, null, false)
             }
         }
         recyclerView?.addOnScrollListener(mScrollListener)
@@ -74,66 +75,68 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
     }
 
     override fun subscribeUiToLiveData() {
+        listOfJobs = mutableListOf()
         subscribeSuggestions()
-        subscribeImagesByQuery()
+        subscribeImages()
     }
 
     private fun subscribeSuggestions() {
-        baseViewModel.getSuggestions()?.observe(baseActivity.get()!!, Observer<List<String>> { suggestions ->
-            if (suggestions != null) {
-                setSuggestions(suggestions)
-            }
-        })
+        val suggestionsJob: Job? = GlobalScope.launch(Dispatchers.Main) {
+            baseViewModel.observeSuggestions()?.observe(baseActivity.get()!!, Observer<List<String>> { suggestions ->
+                if (suggestions != null) {
+                    setSuggestions(suggestions)
+                }
+            })
+        }
+        if (suggestionsJob != null)
+            listOfJobs?.add(suggestionsJob)
     }
 
-    private fun subscribeImagesByQuery() {
-        baseViewModel.getImagesByQuery()?.observe(baseActivity.get()!!, Observer<List<Data>> { data ->
-            if (data != null && !data.isEmpty()) {
-                mData = data
-                fillImagesAdapter(data)
-            } else {
-                searchView?.showSearch(false)
-                searchView?.visibility = View.VISIBLE
-            }
-        })
+    private fun subscribeImages() {
+        val imagesJob: Job? = GlobalScope.launch(Dispatchers.Main) {
+            baseViewModel.observeImages()?.observe(baseActivity.get()!!, Observer<List<Data>> { data ->
+                if (data != null && !data.isEmpty()) {
+                    mData = data
+                    fillImagesAdapter(data)
+                    searchView?.closeSearch()
+                    searchView?.visibility = View.GONE
+                } else {
+                    searchView?.showSearch(false)
+                    searchView?.visibility = View.VISIBLE
+                }
+            })
+        }
+        if (imagesJob != null)
+            listOfJobs?.add(imagesJob)
     }
 
     private fun setSuggestions(suggestions: List<String>) {
         searchView?.setSuggestions(suggestions.toTypedArray())
     }
 
-    private fun getSuggestions(data: List<Data>): Array<String?> {
-        var suggestions = arrayOfNulls<String>(0)
-        data.forEach {
-            suggestions += it.title
-        }
-        return suggestions
-    }
-
     private fun fillImagesAdapter(data: List<Data>) {
         mAdapter.mData = data
     }
 
-    override fun onQueryTextChange(query: String): Boolean {
-        if (!query.isEmpty()) {
+    override fun onQueryTextChange(queryString: String): Boolean {
+        if (!queryString.isEmpty()) {
             queryTextChangedJob?.cancel()
-            queryTextChangedJob = GlobalScope.launch(Dispatchers.Main)
-            {
-                delay(250)
-                setQueryString(query)
+            queryTextChangedJob = GlobalScope.launch(Dispatchers.Main) {
+                delay(500)
+                setQueryString(queryString)
                 doSearch()
             }
         }
         return false
     }
 
-    override fun onQueryTextSubmit(query: String): Boolean {
+    override fun onQueryTextSubmit(queryString: String): Boolean {
         return false
     }
 
     private fun doSearch() {
         setTitle()
-        baseViewModel.findDataByQueryFromServer(0, mQueryString, false, null)
+        baseViewModel.getRemoteImages(0, mQueryString, false, null, false)
     }
 
     private fun setTitle() {
@@ -144,10 +147,10 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
         }
     }
 
-    private fun setQueryString(query: String) {
-        mQueryString = query
+    private fun setQueryString(queryString: String) {
+        mQueryString = queryString
         val preferences = PreferenceManager.getDefaultSharedPreferences(baseActivity.get())
-        preferences.edit().putString(Constants.QUERY, query).apply()
+        preferences.edit().putString(Constants.QUERY, queryString).apply()
     }
 
     private fun getQueryString(): String {

@@ -26,8 +26,11 @@ interface DataDao {
     fun load(id: String?): LiveData<Data>
 
     @Query("select * from data where title like '%' || :query  || '%'")
-    fun loadByQuery(query: String?): List<Data>
+    fun loadImagesByQuery(query: String?): List<Data>
 
     @Query("select title from data")
-    fun loadSuggestions(): LiveData<List<String>>
+    fun loadSuggestions(): List<String>
+
+    @Query("select * from data")
+    fun loadImages(): List<Data>
 }

@@ -17,19 +17,19 @@ constructor(application: Application, datasitory: DataRepository) : BaseViewMode
         useCaseRepository = datasitory
     }
 
-    fun getSuggestions(): LiveData<List<String>>? {
-        return useCaseRepository?.getSuggestions()
+    suspend fun observeSuggestions(): LiveData<List<String>>? {
+        return useCaseRepository?.observeSuggestions()
     }
 
-    fun getImagesByQuery(): LiveData<List<Data>>? {
-        return useCaseRepository?.getDataByQuery()
+    suspend fun observeImages(): LiveData<List<Data>>? {
+        return useCaseRepository?.observeImages()
     }
 
-    fun findDataByQueryFromServer(page: Int, q: String, mature: Boolean, qType: String?) {
-        useCaseRepository?.findDataByQueryFromServer(page, q, mature, qType)
+    fun getAllLocalImagesByQuery(queryString: String) {
+        useCaseRepository?.getAllLocalImagesByQuery(queryString)
     }
 
-    fun getDataCached(queryString: String) {
-        useCaseRepository?.getDataCached(queryString)
+    fun getRemoteImages(page: Int, queryString: String, mature: Boolean, qType: String?, dispose: Boolean) {
+        useCaseRepository?.getRemoteImages(page, queryString, mature, qType, dispose)
     }
 }
