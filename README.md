@@ -4,4 +4,4 @@ Design: Material Design https://material.io
 Features: Infinite Scroll, Persistence, Kotlin Coroutines
 Architecture: MVVM with repository pattern
 Language: Kotlin
-The App consumes Imgur REST API https://api.imgur.com/ and search for images by query string.
+The App consumes Imgur REST API http://private-f0eea-mobilegllatam.apiary-mock.com/list
