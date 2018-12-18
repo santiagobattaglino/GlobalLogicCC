@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.battaglino.santiago.mvvmkotlin"
+        applicationId "com.battaglino.santiago.globallogic"
         minSdkVersion 24
         targetSdkVersion 28
         versionCode 1

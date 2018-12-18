@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MVVM Kotlin</string>
+    <string name="app_name">GlobalLogic</string>
     <string name="search">Search</string>
     <string name="mainTitle">Searching for: %s</string>
     <string name="imageTitle">Image title</string>
