@@ -29,7 +29,7 @@ constructor(application: Application, datasitory: DataRepository) : BaseViewMode
         useCaseRepository?.getAllLocalImagesByQuery(queryString)
     }
 
-    fun getRemoteImages(page: Int, queryString: String, mature: Boolean, qType: String?, dispose: Boolean) {
-        useCaseRepository?.getRemoteImages(page, queryString, mature, qType, dispose)
+    fun getRemoteDataList(queryString: String, dispose: Boolean) {
+        useCaseRepository?.getRemoteDataList(queryString, dispose)
     }
 }

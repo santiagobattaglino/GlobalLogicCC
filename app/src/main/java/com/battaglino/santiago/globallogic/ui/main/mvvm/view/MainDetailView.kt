@@ -18,6 +18,7 @@ class MainDetailView(activity: MainDetailActivity, viewModel: MainDetailViewMode
     private val toolbar = baseActivity.get()?.toolbar!!
     private val image = baseActivity.get()?.image!!
     private val imageTitle = baseActivity.get()?.imageTitle!!
+    private val imageDescription = baseActivity.get()?.imageDescription!!
     private val data: Data = baseActivity.get()?.intent?.getParcelableExtra(Constants.EXTRA_DATA)!!
 
     init {
@@ -38,24 +39,14 @@ class MainDetailView(activity: MainDetailActivity, viewModel: MainDetailViewMode
 
     private fun setValues() {
         imageTitle.text = data.title
+        imageDescription.text = data.description
 
-        // Only for album type
-        if (data.images.isNotEmpty() && data.isAlbum) {
-            Picasso.get()
-                    .load(data.images[0].link)
-                    .fit()
-                    .placeholder(R.drawable.picasso_placeholder)
-                    .error(R.drawable.picasso_error)
-                    .centerCrop()
-                    .into(image)
-        } else {
-            Picasso.get()
-                    .load(data.link)
-                    .fit()
-                    .placeholder(R.drawable.picasso_placeholder)
-                    .error(R.drawable.picasso_error)
-                    .centerCrop()
-                    .into(image)
-        }
+        Picasso.get()
+                .load(data.image)
+                .fit()
+                .placeholder(R.drawable.picasso_placeholder)
+                .error(R.drawable.picasso_error)
+                .centerCrop()
+                .into(image)
     }
 }

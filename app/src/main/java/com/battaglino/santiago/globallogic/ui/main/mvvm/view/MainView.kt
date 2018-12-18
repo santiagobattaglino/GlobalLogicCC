@@ -19,7 +19,10 @@ import com.battaglino.santiago.globallogic.ui.main.mvvm.viewmodel.MainViewModel
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -49,6 +52,8 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
         setUpSearchView()
         setTitle()
         setUpRecyclerView()
+
+        baseViewModel.getRemoteDataList(mQueryString, true)
     }
 
     private fun setUpToolbar() {
@@ -66,7 +71,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
 
         val mScrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-                baseViewModel.getRemoteImages(page, mQueryString, false, null, false)
+                baseViewModel.getRemoteDataList(mQueryString, false)
             }
         }
         recyclerView?.addOnScrollListener(mScrollListener)
@@ -76,8 +81,8 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
 
     override fun subscribeUiToLiveData() {
         listOfJobs = mutableListOf()
-        subscribeSuggestions()
         subscribeImages()
+        subscribeSuggestions()
     }
 
     private fun subscribeSuggestions() {
@@ -119,24 +124,26 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
     }
 
     override fun onQueryTextChange(queryString: String): Boolean {
-        if (!queryString.isEmpty()) {
+        /*if (!queryString.isEmpty()) {
             queryTextChangedJob?.cancel()
             queryTextChangedJob = GlobalScope.launch(Dispatchers.Main) {
                 delay(500)
                 setQueryString(queryString)
                 doSearch()
             }
-        }
+        }*/
         return false
     }
 
     override fun onQueryTextSubmit(queryString: String): Boolean {
+        setQueryString(queryString)
+        doSearch()
         return false
     }
 
     private fun doSearch() {
         setTitle()
-        baseViewModel.getRemoteImages(0, mQueryString, false, null, false)
+        baseViewModel.getRemoteDataList(mQueryString, false)
     }
 
     private fun setTitle() {

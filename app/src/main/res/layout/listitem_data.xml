@@ -33,6 +33,20 @@
             android:padding="8dp"
             android:text="@string/imageTitle" />
 
+        <TextView
+            android:id="@+id/imageDescription"
+            style="@style/TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageTitle"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="3"
+            android:padding="8dp"
+            android:text="@string/description" />
+
     </RelativeLayout>
 
 </android.support.design.card.MaterialCardView>
+
+

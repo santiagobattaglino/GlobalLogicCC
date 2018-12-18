@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,28 +7,49 @@
     android:transitionName="@string/dataTransition"
     tools:context=".ui.main.activity.MainDetailActivity">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:contentDescription="@string/app_name" />
-
-    <TextView
-        android:id="@+id/imageTitle"
-        style="@style/TextView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/image"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="@string/imageTitle"
-        android:textColor="@android:color/secondary_text_dark" />
+        android:background="@android:color/black"
+        android:transitionName="@string/dataTransition"
+        tools:context=".ui.main.activity.MainDetailActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginTop="24dp"
-        android:theme="@style/ToolbarColoredBackArrow" />
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:contentDescription="@string/app_name" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/imageTitle"
+            style="@style/TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/imageTitle"
+            android:textColor="@android:color/secondary_text_dark" />
+
+        <TextView
+            android:id="@+id/imageDescription"
+            style="@style/TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageTitle"
+            android:gravity="center"
+            android:minLines="3"
+            android:padding="8dp"
+            android:text="@string/description"
+            android:textColor="@android:color/secondary_text_dark" />
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="24dp"
+            android:theme="@style/ToolbarColoredBackArrow" />
+
+    </RelativeLayout>
+
+</ScrollView>

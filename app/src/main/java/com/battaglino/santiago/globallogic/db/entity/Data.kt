@@ -1,8 +1,10 @@
 package com.battaglino.santiago.globallogic.db.entity
 
-import android.arch.persistence.room.*
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
+import android.arch.persistence.room.Index
+import android.arch.persistence.room.PrimaryKey
 import android.os.Parcelable
-import com.battaglino.santiago.globallogic.db.converters.ImageConverter
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -15,27 +17,24 @@ import org.jetbrains.annotations.NotNull
 @Entity(tableName = "data", indices = [Index(value = arrayOf("id"))])
 data class Data @Ignore constructor(
 
-        @PrimaryKey
+        @PrimaryKey(autoGenerate = true)
         @NotNull
         @Expose
-        var id: String,
+        var id: Int,
 
         @Expose
         @SerializedName("title")
         var title: String?,
 
-        @Expose
-        @SerializedName("is_album")
-        var isAlbum: Boolean,
 
         @Expose
-        @SerializedName("link")
-        var link: String,
+        @SerializedName("description")
+        var description: String?,
+
 
         @Expose
-        @SerializedName("images")
-        @TypeConverters(ImageConverter::class)
-        var images: List<Image>
+        @SerializedName("image")
+        var image: String?
 ) : Parcelable {
-    constructor() : this("", "", false, "", emptyList())
+    constructor() : this(0, "", "", "")
 }

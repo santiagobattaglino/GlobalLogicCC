@@ -18,7 +18,6 @@ import com.battaglino.santiago.globallogic.global.Constants
  * This class is used to create the database and get an instance of it.
  */
 @Database(entities = [Data::class, Image::class], version = 1, exportSchema = true)
-@TypeConverters(DateConverter::class, ImageConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun dataModel(): DataDao

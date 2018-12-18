@@ -8,14 +8,6 @@ import com.google.gson.annotations.SerializedName
  */
 class ApiResponse<T> {
 
-    @SerializedName("success")
-    @Expose
-    var success: Boolean = true
-
-    @SerializedName("status")
-    @Expose
-    var status: Int = 200
-
     @SerializedName("data")
     @Expose
     var data: List<T> = emptyList()

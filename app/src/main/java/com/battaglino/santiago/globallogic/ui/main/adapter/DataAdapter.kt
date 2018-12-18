@@ -83,25 +83,15 @@ class DataAdapter(
 
             if (itemViewType == VIEW_TYPE_DATA) {
                 imageTitle.text = data.title
+                imageDescription.text = data.description
 
-                // Only for album type
-                if (data.images.isNotEmpty() && data.isAlbum) {
-                    Picasso.get()
-                            .load(data.images[0].link)
-                            .fit()
-                            .placeholder(R.drawable.picasso_placeholder)
-                            .error(R.drawable.picasso_error)
-                            .centerCrop()
-                            .into(image)
-                } else {
-                    Picasso.get()
-                            .load(data.link)
-                            .fit()
-                            .placeholder(R.drawable.picasso_placeholder)
-                            .error(R.drawable.picasso_error)
-                            .centerCrop()
-                            .into(image)
-                }
+                Picasso.get()
+                        .load(data.image)
+                        .fit()
+                        .placeholder(R.drawable.picasso_placeholder)
+                        .error(R.drawable.picasso_error)
+                        .centerCrop()
+                        .into(image)
             }
         }
     }

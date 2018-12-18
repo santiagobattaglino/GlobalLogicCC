@@ -4,7 +4,6 @@ import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
-import com.battaglino.santiago.globallogic.data.model.ApiResponse
 import com.battaglino.santiago.globallogic.data.repository.UseCaseRepository
 import com.battaglino.santiago.globallogic.data.service.ApiService
 import com.battaglino.santiago.globallogic.db.AppDatabase
@@ -64,24 +63,24 @@ constructor(context: Application, private val mClient: ApiService) : UseCaseRepo
 
     }
 
-    fun getRemoteImages(page: Int, queryString: String, mature: Boolean, qType: String?, dispose: Boolean) {
-        mClient.getPagedImagesByQuery(page, queryString, mature, qType)
+    fun getRemoteDataList(queryString: String, dispose: Boolean) {
+        mClient.getDataList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ApiResponse<Data>> {
+                .subscribe(object : Observer<List<Data>> {
                     override fun onSubscribe(d: Disposable) {
                         if (dispose)
                             mDisposable.add(d)
                     }
 
-                    override fun onNext(dataListFromServer: ApiResponse<Data>) {
-                        addFoundImages(dataListFromServer.data, queryString)
+                    override fun onNext(dataListFromServer: List<Data>) {
+                        addFoundImages(dataListFromServer, queryString)
                         if (dispose)
                             mDisposable.dispose()
                     }
 
                     override fun onError(e: Throwable) {
-                        Log.e("error", e.message)
+                        Log.e("DataRepository", e.message)
                     }
 
                     override fun onComplete() {
@@ -100,7 +99,6 @@ constructor(context: Application, private val mClient: ApiService) : UseCaseRepo
     suspend fun observeImages(): LiveData<List<Data>> {
         GlobalScope.async(Dispatchers.IO) {
             setImages(mDataBase.dataModel().loadImages())
-            setSuggestions(mDataBase.dataModel().loadSuggestions())
         }.await()
         return mFoundImages
     }
