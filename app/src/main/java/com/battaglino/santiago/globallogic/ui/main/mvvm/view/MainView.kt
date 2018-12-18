@@ -53,7 +53,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
         setTitle()
         setUpRecyclerView()
 
-        baseViewModel.getRemoteDataList(mQueryString, true)
+        baseViewModel.getRemoteDataList(false)
     }
 
     private fun setUpToolbar() {
@@ -71,7 +71,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
 
         val mScrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-                baseViewModel.getRemoteDataList(mQueryString, false)
+                baseViewModel.getRemoteDataList(false)
             }
         }
         recyclerView?.addOnScrollListener(mScrollListener)
@@ -82,19 +82,6 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
     override fun subscribeUiToLiveData() {
         listOfJobs = mutableListOf()
         subscribeImages()
-        subscribeSuggestions()
-    }
-
-    private fun subscribeSuggestions() {
-        val suggestionsJob: Job? = GlobalScope.launch(Dispatchers.Main) {
-            baseViewModel.observeSuggestions()?.observe(baseActivity.get()!!, Observer<List<String>> { suggestions ->
-                if (suggestions != null) {
-                    setSuggestions(suggestions)
-                }
-            })
-        }
-        if (suggestionsJob != null)
-            listOfJobs?.add(suggestionsJob)
     }
 
     private fun subscribeImages() {
@@ -102,6 +89,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
             baseViewModel.observeImages()?.observe(baseActivity.get()!!, Observer<List<Data>> { data ->
                 if (data != null && !data.isEmpty()) {
                     mData = data
+                    setSuggestions(getSuggestions(data))
                     fillImagesAdapter(data)
                     searchView?.closeSearch()
                     searchView?.visibility = View.GONE
@@ -115,8 +103,17 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
             listOfJobs?.add(imagesJob)
     }
 
-    private fun setSuggestions(suggestions: List<String>) {
-        searchView?.setSuggestions(suggestions.toTypedArray())
+    private fun getSuggestions(data: List<Data>): List<String>? {
+        val suggestions: MutableList<String> = mutableListOf()
+        for (item in data) {
+            suggestions.add(item.title!!)
+        }
+        return suggestions
+    }
+
+    private fun setSuggestions(suggestions: List<String>?) {
+        if (suggestions != null)
+            searchView?.setSuggestions(suggestions.toTypedArray())
     }
 
     private fun fillImagesAdapter(data: List<Data>) {
@@ -124,7 +121,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
     }
 
     override fun onQueryTextChange(queryString: String): Boolean {
-        /*if (!queryString.isEmpty()) {
+        /* if (!queryString.isEmpty()) {
             queryTextChangedJob?.cancel()
             queryTextChangedJob = GlobalScope.launch(Dispatchers.Main) {
                 delay(500)
@@ -143,7 +140,7 @@ class MainView(activity: MainActivity, viewModel: MainViewModel) :
 
     private fun doSearch() {
         setTitle()
-        baseViewModel.getRemoteDataList(mQueryString, false)
+        baseViewModel.getRemoteDataList(false)
     }
 
     private fun setTitle() {

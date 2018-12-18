@@ -52,10 +52,10 @@ constructor(context: Application, private val mClient: ApiService) : UseCaseRepo
         }
     }
 
-    private fun addFoundImages(data: List<Data>, queryString: String) {
+    private fun addFoundImages(data: List<Data>) {
         GlobalScope.launch(Dispatchers.IO) {
             mDataBase.dataModel().insertAll(data)
-            setImages(mDataBase.dataModel().loadImagesByQuery(queryString))
+            setImages(mDataBase.dataModel().loadImages())
         }
     }
 
@@ -63,7 +63,7 @@ constructor(context: Application, private val mClient: ApiService) : UseCaseRepo
 
     }
 
-    fun getRemoteDataList(queryString: String, dispose: Boolean) {
+    fun getRemoteDataList(dispose: Boolean) {
         mClient.getDataList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -74,7 +74,7 @@ constructor(context: Application, private val mClient: ApiService) : UseCaseRepo
                     }
 
                     override fun onNext(dataListFromServer: List<Data>) {
-                        addFoundImages(dataListFromServer, queryString)
+                        addFoundImages(dataListFromServer)
                         if (dispose)
                             mDisposable.dispose()
                     }
